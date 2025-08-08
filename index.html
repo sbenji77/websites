@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ma Page Cool</title>
+  <style>
+    /* Reset & style global */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      padding: 2rem;
+      text-align: center;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+    }
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+    .card {
+      background: rgba(255,255,255,0.08);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, background 0.3s ease;
+      backdrop-filter: blur(6px);
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      background: rgba(255,255,255,0.15);
+    }
+    .card h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.4rem;
+    }
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      opacity: 0.9;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.85rem;
+      background: rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚀 Ma Page HTML Moderne</h1>
+    <p>Une base simple, responsive, et élégante pour mes tests</p>
+  </header>
+  
+  <main>
+    <div class="card">
+      <h2>💡 Idée 1</h2>
+      <p>Testez vos couleurs, typographies et animations CSS ici.</p>
+    </div>
+    <div class="card">
+      <h2>🎨 Idée 2</h2>
+      <p>Ajoutez des dégradés, ombres portées et effets au survol.</p>
+    </div>
+    <div class="card">
