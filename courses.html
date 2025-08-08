@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Liste de courses</title>
   <link rel="stylesheet" href="assets/css/styles.css">
-  <meta name="description" content="Liste de courses – ajouter, cocher, filtrer, exporter.">
+  <meta name="description" content="Liste de courses – ajouter, cocher, filtrer, exporter, synchroniser.">
 </head>
 <body>
   <header class="site-header compact">
@@ -19,6 +19,13 @@
 
   <main class="container narrow">
     <h1>🛒 Liste de courses</h1>
+
+    <!-- Lien de partage -->
+    <div class="share">
+      <span>🔗 Lien de cette liste :</span>
+      <input id="share-url" type="text" readonly>
+      <button id="new-list" class="btn subtle">Nouvelle liste</button>
+    </div>
 
     <form id="add-form" class="add-form" autocomplete="off">
       <input id="name" type="text" placeholder="Article (ex. Lait)" required>
@@ -54,8 +61,8 @@
     <ul id="list" class="list"></ul>
 
     <p class="hint">
-      Astuce : la liste est stockée dans votre navigateur.  
-      Pour l’utiliser sur un autre appareil, utilisez **Exporter** puis **Importer**.
+      Astuce : la liste est stockée localement **et** synchronisée dans le cloud si la page a “?list=…”.  
+      Partagez l’URL pour collaborer. Hors connexion, les changements seront repris à la reconnexion.
     </p>
   </main>
 
@@ -63,85 +70,118 @@
     <p>© <span id="year"></span></p>
   </footer>
 
+  <!-- Firebase (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
   <script>
-    const KEY = 'shoppingList.v1';
-    const state = {
-      items: [],
-      q: '',
-      filter: 'all'
+    // 1) CONFIG FIREBASE — À REMPLACER
+    const firebaseConfig = {
+      apiKey: "REMPLACEZ-MOI",
+      authDomain: "REMPLACEZ-MOI.firebaseapp.com",
+      projectId: "REMPLACEZ-MOI",
+      storageBucket: "REMPLACEZ-MOI.appspot.com",
+      messagingSenderId: "REMPLACEZ-MOI",
+      appId: "REMPLACEZ-MOI"
     };
 
-    const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+    // 2) APP STATE
+    const KEY = 'shoppingList.v1';
+    const state = { items: [], q: '', filter: 'all' };
+    const $ = sel => document.querySelector(sel);
     const listEl = $('#list');
 
-    function load() {
-      try {
-        const raw = localStorage.getItem(KEY);
-        if (raw) state.items = JSON.parse(raw);
-      } catch {}
-    }
-    function save() {
-      localStorage.setItem(KEY, JSON.stringify(state.items));
+    // 3) UTILS
+    const uid = () => Math.random().toString(36).slice(2,9);
+    const escapeHTML = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const setShareUrl = (listId) => {
+      const url = new URL(location.href);
+      url.searchParams.set('list', listId);
+      $('#share-url').value = url.toString();
+      history.replaceState({}, '', url);
+    };
+
+    // 4) LOCAL CACHE
+    function loadLocal(){ try{ const raw=localStorage.getItem(KEY); if(raw) state.items=JSON.parse(raw);}catch{} }
+    function saveLocal(){ localStorage.setItem(KEY, JSON.stringify(state.items)); }
+
+    // 5) CLOUD (Firestore)
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    let docRef = null;
+    let stopSnap = null;
+
+    async function initCloud(){
+      await firebase.auth().signInAnonymously().catch(console.error);
+      const params = new URLSearchParams(location.search);
+      let listId = params.get('list') || localStorage.getItem('listId');
+      if (!listId) { listId = uid(); localStorage.setItem('listId', listId); }
+      setShareUrl(listId);
+      docRef = db.collection('lists').doc(listId);
+
+      // créer le doc s'il n'existe pas
+      const snap = await docRef.get();
+      if (!snap.exists) await docRef.set({ items: state.items, updatedAt: Date.now() });
+
+      // écoute temps réel
+      stopSnap = docRef.onSnapshot(s => {
+        const data = s.data();
+        if (data && Array.isArray(data.items)) {
+          state.items = data.items;
+          saveLocal();
+          render();
+        }
+      });
     }
 
-    function uid() { return Math.random().toString(36).slice(2,9); }
+    const saveCloud = (() => { let t; return () => {
+      clearTimeout(t);
+      if (!docRef) return; // pas de cloud → local only
+      t = setTimeout(() => docRef.set({ items: state.items, updatedAt: Date.now() }, { merge:true }), 250);
+    }; })();
 
-    function addItem(name, qty=1, cat='') {
-      state.items.push({ id: uid(), name: name.trim(), qty: Number(qty)||1, cat: cat||'', done: false, ts: Date.now() });
-      save(); render();
-    }
-    function toggleItem(id) {
-      const it = state.items.find(i => i.id === id);
-      if (it) { it.done = !it.done; save(); renderRow(id); }
-    }
-    function removeDone() {
-      state.items = state.items.filter(i => !i.done);
-      save(); render();
-    }
-    function updateItem(id, patch) {
-      const it = state.items.find(i => i.id === id);
-      if (it) { Object.assign(it, patch); save(); renderRow(id); }
-    }
+    function save(){ saveLocal(); saveCloud(); }
 
-    function matches(it) {
-      const q = state.q.trim().toLowerCase();
+    // 6) DOMAIN LOGIC
+    function addItem(name, qty=1, cat=''){ state.items.push({ id: uid(), name: name.trim(), qty: Number(qty)||1, cat: cat||'', done:false, ts: Date.now() }); save(); render(); }
+    function toggleItem(id){ const it=state.items.find(i=>i.id===id); if(it){ it.done=!it.done; save(); renderRow(id);} }
+    function removeDone(){ state.items=state.items.filter(i=>!i.done); save(); render(); }
+    function updateItem(id, patch){ const it=state.items.find(i=>i.id===id); if(it){ Object.assign(it, patch); save(); renderRow(id);} }
+    const matches = it => {
+      const q=state.q.trim().toLowerCase();
       const okQ = !q || it.name.toLowerCase().includes(q) || (it.cat||'').toLowerCase().includes(q);
-      const okF = state.filter === 'all' || (state.filter === 'todo' && !it.done) || (state.filter === 'done' && it.done);
+      const okF = state.filter==='all' || (state.filter==='todo' && !it.done) || (state.filter==='done' && it.done);
       return okQ && okF;
-    }
+    };
 
-    function render() {
-      listEl.innerHTML = '';
+    // 7) RENDER
+    function render(){
+      listEl.innerHTML='';
       state.items
-        .sort((a,b) => Number(a.done)-Number(b.done) || a.name.localeCompare(b.name))
+        .sort((a,b)=>Number(a.done)-Number(b.done)||a.name.localeCompare(b.name))
         .filter(matches)
         .forEach(it => listEl.appendChild(renderItem(it)));
     }
-
-    function renderRow(id) {
-      const li = listEl.querySelector(`[data-id="${id}"]`);
-      if (!li) { render(); return; }
-      const it = state.items.find(i => i.id === id);
-      const fresh = renderItem(it);
-      li.replaceWith(fresh);
+    function renderRow(id){
+      const li=listEl.querySelector(`[data-id="${id}"]`);
+      if(!li){ render(); return; }
+      const it=state.items.find(i=>i.id===id);
+      li.replaceWith(renderItem(it));
     }
-
-    function renderItem(it) {
-      const li = document.createElement('li');
-      li.className = 'row' + (it.done ? ' done' : '');
-      li.dataset.id = it.id;
-
-      li.innerHTML = `
+    function renderItem(it){
+      const li=document.createElement('li');
+      li.className='row'+(it.done?' done':''); li.dataset.id=it.id;
+      li.innerHTML=`
         <label class="check">
-          <input type="checkbox" ${it.done ? 'checked' : ''} aria-label="Cocher ${it.name}">
+          <input type="checkbox" ${it.done?'checked':''} aria-label="Cocher ${it.name}">
           <span></span>
         </label>
         <div class="content">
           <div class="title" contenteditable="true" spellcheck="false">${escapeHTML(it.name)}</div>
           <div class="meta">
             <span class="badge">${it.qty}</span>
-            ${it.cat ? `<span class="chip">${escapeHTML(it.cat)}</span>` : ''}
+            ${it.cat?`<span class="chip">${escapeHTML(it.cat)}</span>`:''}
           </div>
         </div>
         <div class="actions">
@@ -149,76 +189,61 @@
           <button class="icon inc" title="+">＋</button>
           <button class="icon edit-cat" title="Catégorie">🏷</button>
           <button class="icon del" title="Supprimer">🗑</button>
-        </div>
-      `;
-
-      // interactions
-      li.querySelector('input[type="checkbox"]').addEventListener('change', () => toggleItem(it.id));
-      li.querySelector('.title').addEventListener('blur', (e) => {
-        const name = e.target.textContent.trim();
-        if (name) updateItem(it.id, { name });
-        else renderRow(it.id);
+        </div>`;
+      li.querySelector('input[type="checkbox"]').addEventListener('change',()=>toggleItem(it.id));
+      li.querySelector('.title').addEventListener('blur',e=>{
+        const name=e.target.textContent.trim();
+        if(name) updateItem(it.id,{name}); else renderRow(it.id);
       });
-      li.querySelector('.inc').addEventListener('click', () => updateItem(it.id, { qty: it.qty+1 }));
-      li.querySelector('.dec').addEventListener('click', () => updateItem(it.id, { qty: Math.max(1, it.qty-1) }));
-      li.querySelector('.edit-cat').addEventListener('click', () => {
-        const val = prompt('Catégorie', it.cat || '');
-        if (val !== null) updateItem(it.id, { cat: val.trim() });
+      li.querySelector('.inc').addEventListener('click',()=>updateItem(it.id,{qty:it.qty+1}));
+      li.querySelector('.dec').addEventListener('click',()=>updateItem(it.id,{qty:Math.max(1,it.qty-1)}));
+      li.querySelector('.edit-cat').addEventListener('click',()=>{
+        const val=prompt('Catégorie',it.cat||''); if(val!==null) updateItem(it.id,{cat:val.trim()});
       });
-      li.querySelector('.del').addEventListener('click', () => {
-        state.items = state.items.filter(x => x.id !== it.id);
-        save(); render();
+      li.querySelector('.del').addEventListener('click',()=>{
+        state.items=state.items.filter(x=>x.id!==it.id); save(); render();
       });
-
       return li;
     }
 
-    function escapeHTML(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-    // Handlers UI
-    $('#add-form').addEventListener('submit', e => {
+    // 8) UI HANDLERS
+    $('#add-form').addEventListener('submit', e=>{
       e.preventDefault();
-      const name = $('#name').value;
-      if (!name.trim()) return;
+      const name=$('#name').value; if(!name.trim()) return;
       addItem(name, $('#qty').value, $('#cat').value);
-      e.target.reset();
-      $('#qty').value = 1;
+      e.target.reset(); $('#qty').value=1;
     });
-
-    $('#search').addEventListener('input', e => { state.q = e.target.value; render(); });
-    $('#filter').addEventListener('change', e => { state.filter = e.target.value; render(); });
+    $('#search').addEventListener('input', e=>{ state.q=e.target.value; render(); });
+    $('#filter').addEventListener('change', e=>{ state.filter=e.target.value; render(); });
     $('#clear-done').addEventListener('click', removeDone);
-
-    // Export / Import
-    $('#export').addEventListener('click', () => {
-      const blob = new Blob([JSON.stringify(state.items, null, 2)], {type: 'application/json'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'liste-courses.json';
-      a.click();
-      URL.revokeObjectURL(a.href);
+    $('#export').addEventListener('click',()=>{
+      const blob=new Blob([JSON.stringify(state.items,null,2)],{type:'application/json'});
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='liste-courses.json'; a.click(); URL.revokeObjectURL(a.href);
     });
-    $('#import').addEventListener('change', async (e) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-      try {
-        const text = await file.text();
-        const data = JSON.parse(text);
-        if (Array.isArray(data)) {
-          state.items = data.map(x => ({ id: x.id||uid(), name: String(x.name||'').trim(), qty: Number(x.qty)||1, cat: String(x.cat||''), done: !!x.done, ts: x.ts||Date.now() }));
+    $('#import').addEventListener('change', async e=>{
+      const file=e.target.files?.[0]; if(!file) return;
+      try{
+        const text=await file.text(); const data=JSON.parse(text);
+        if(Array.isArray(data)){
+          state.items=data.map(x=>({ id:x.id||uid(), name:String(x.name||'').trim(), qty:Number(x.qty)||1, cat:String(x.cat||''), done:!!x.done, ts:x.ts||Date.now() }));
           save(); render();
-        } else {
-          alert('Fichier invalide');
-        }
-      } catch {
-        alert('Impossible de lire ce fichier');
-      }
-      e.target.value = '';
+        } else alert('Fichier invalide');
+      } catch { alert('Impossible de lire ce fichier'); }
+      e.target.value='';
+    });
+    $('#new-list').addEventListener('click', ()=>{
+      const id=uid();
+      localStorage.setItem('listId', id);
+      setShareUrl(id);
+      state.items = [];
+      save(); render();
     });
 
-    // init
-    load(); render();
+    // 9) INIT
+    loadLocal(); render();
+    initCloud(); // active la synchro si possible
     document.getElementById('year').textContent = new Date().getFullYear();
+    $('#share-url').addEventListener('focus', e=>e.target.select());
   </script>
 </body>
 </html>
