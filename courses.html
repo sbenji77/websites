@@ -77,14 +77,18 @@
 
   <script>
     // 1) CONFIG FIREBASE — À REMPLACER
-    const firebaseConfig = {
-      apiKey: "REMPLACEZ-MOI",
-      authDomain: "REMPLACEZ-MOI.firebaseapp.com",
-      projectId: "REMPLACEZ-MOI",
-      storageBucket: "REMPLACEZ-MOI.appspot.com",
-      messagingSenderId: "REMPLACEZ-MOI",
-      appId: "REMPLACEZ-MOI"
-    };
+    
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUcLyWrI8Fa3QdCWqQjnkZaCgtpEHWJII",
+    authDomain: "courses-list-aedc3.firebaseapp.com",
+    projectId: "courses-list-aedc3",
+    storageBucket: "courses-list-aedc3.firebasestorage.app",
+    messagingSenderId: "370685305590",
+    appId: "1:370685305590:web:3d10bc68686abc1ae1c2d7"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
 
     // 2) APP STATE
     const KEY = 'shoppingList.v1';
