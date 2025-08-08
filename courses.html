@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Liste de courses</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <meta name="description" content="Liste de courses – ajouter, cocher, filtrer, exporter.">
+</head>
+<body>
+  <header class="site-header compact">
+    <nav class="nav">
+      <a class="brand" href="./">← Accueil</a>
+      <ul class="nav-list">
+        <li><a class="active" href="./courses.html">Liste de courses</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container narrow">
+    <h1>🛒 Liste de courses</h1>
+
+    <form id="add-form" class="add-form" autocomplete="off">
+      <input id="name" type="text" placeholder="Article (ex. Lait)" required>
+      <input id="qty" type="number" min="1" step="1" value="1" aria-label="Quantité">
+      <select id="cat" aria-label="Catégorie">
+        <option value="">Catégorie…</option>
+        <option>Frais</option>
+        <option>Epicerie</option>
+        <option>Fruits & Légumes</option>
+        <option>Boissons</option>
+        <option>Hygiène</option>
+        <option>Ménage</option>
+        <option>Autre</option>
+      </select>
+      <button class="btn primary" type="submit">Ajouter</button>
+    </form>
+
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Rechercher…">
+      <select id="filter">
+        <option value="all">Tous</option>
+        <option value="todo">À acheter</option>
+        <option value="done">Achetés</option>
+      </select>
+      <div class="spacer"></div>
+      <button id="clear-done" class="btn subtle">Supprimer cochés</button>
+      <button id="export" class="btn">Exporter</button>
+      <label class="btn file">
+        Importer <input id="import" type="file" accept="application/json">
+      </label>
+    </div>
+
+    <ul id="list" class="list"></ul>
+
+    <p class="hint">
+      Astuce : la liste est stockée dans votre navigateur.  
+      Pour l’utiliser sur un autre appareil, utilisez **Exporter** puis **Importer**.
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span></p>
+  </footer>
+
+  <script>
+    const KEY = 'shoppingList.v1';
+    const state = {
+      items: [],
+      q: '',
+      filter: 'all'
+    };
+
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+    const listEl = $('#list');
+
+    function load() {
+      try {
+        const raw = localStorage.getItem(KEY);
+        if (raw) state.items = JSON.parse(raw);
+      } catch {}
+    }
+    function save() {
+      localStorage.setItem(KEY, JSON.stringify(state.items));
+    }
+
+    function uid() { return Math.random().toString(36).slice(2,9); }
+
+    function addItem(name, qty=1, cat='') {
+      state.items.push({ id: uid(), name: name.trim(), qty: Number(qty)||1, cat: cat||'', done: false, ts: Date.now() });
+      save(); render();
+    }
+    function toggleItem(id) {
+      const it = state.items.find(i => i.id === id);
+      if (it) { it.done = !it.done; save(); renderRow(id); }
+    }
+    function removeDone() {
+      state.items = state.items.filter(i => !i.done);
+      save(); render();
+    }
+    function updateItem(id, patch) {
+      const it = state.items.find(i => i.id === id);
+      if (it) { Object.assign(it, patch); save(); renderRow(id); }
+    }
+
+    function matches(it) {
+      const q = state.q.trim().toLowerCase();
+      const okQ = !q || it.name.toLowerCase().includes(q) || (it.cat||'').toLowerCase().includes(q);
+      const okF = state.filter === 'all' || (state.filter === 'todo' && !it.done) || (state.filter === 'done' && it.done);
+      return okQ && okF;
+    }
+
+    function render() {
+      listEl.innerHTML = '';
+      state.items
+        .sort((a,b) => Number(a.done)-Number(b.done) || a.name.localeCompare(b.name))
+        .filter(matches)
+        .forEach(it => listEl.appendChild(renderItem(it)));
+    }
+
+    function renderRow(id) {
+      const li = listEl.querySelector(`[data-id="${id}"]`);
+      if (!li) { render(); return; }
+      const it = state.items.find(i => i.id === id);
+      const fresh = renderItem(it);
+      li.replaceWith(fresh);
+    }
+
+    function renderItem(it) {
+      const li = document.createElement('li');
+      li.className = 'row' + (it.done ? ' done' : '');
+      li.dataset.id = it.id;
+
+      li.innerHTML = `
+        <label class="check">
+          <input type="checkbox" ${it.done ? 'checked' : ''} aria-label="Cocher ${it.name}">
+          <span></span>
+        </label>
+        <div class="content">
+          <div class="title" contenteditable="true" spellcheck="false">${escapeHTML(it.name)}</div>
+          <div class="meta">
+            <span class="badge">${it.qty}</span>
+            ${it.cat ? `<span class="chip">${escapeHTML(it.cat)}</span>` : ''}
+          </div>
+        </div>
+        <div class="actions">
+          <button class="icon dec" title="–">−</button>
+          <button class="icon inc" title="+">＋</button>
+          <button class="icon edit-cat" title="Catégorie">🏷</button>
+          <button class="icon del" title="Supprimer">🗑</button>
+        </div>
+      `;
+
+      // interactions
+      li.querySelector('input[type="checkbox"]').addEventListener('change', () => toggleItem(it.id));
+      li.querySelector('.title').addEventListener('blur', (e) => {
+        const name = e.target.textContent.trim();
+        if (name) updateItem(it.id, { name });
+        else renderRow(it.id);
+      });
+      li.querySelector('.inc').addEventListener('click', () => updateItem(it.id, { qty: it.qty+1 }));
+      li.querySelector('.dec').addEventListener('click', () => updateItem(it.id, { qty: Math.max(1, it.qty-1) }));
+      li.querySelector('.edit-cat').addEventListener('click', () => {
+        const val = prompt('Catégorie', it.cat || '');
+        if (val !== null) updateItem(it.id, { cat: val.trim() });
+      });
+      li.querySelector('.del').addEventListener('click', () => {
+        state.items = state.items.filter(x => x.id !== it.id);
+        save(); render();
+      });
+
+      return li;
+    }
+
+    function escapeHTML(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    // Handlers UI
+    $('#add-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = $('#name').value;
+      if (!name.trim()) return;
+      addItem(name, $('#qty').value, $('#cat').value);
+      e.target.reset();
+      $('#qty').value = 1;
+    });
+
+    $('#search').addEventListener('input', e => { state.q = e.target.value; render(); });
+    $('#filter').addEventListener('change', e => { state.filter = e.target.value; render(); });
+    $('#clear-done').addEventListener('click', removeDone);
+
+    // Export / Import
+    $('#export').addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(state.items, null, 2)], {type: 'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'liste-courses.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+    $('#import').addEventListener('change', async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+        if (Array.isArray(data)) {
+          state.items = data.map(x => ({ id: x.id||uid(), name: String(x.name||'').trim(), qty: Number(x.qty)||1, cat: String(x.cat||''), done: !!x.done, ts: x.ts||Date.now() }));
+          save(); render();
+        } else {
+          alert('Fichier invalide');
+        }
+      } catch {
+        alert('Impossible de lire ce fichier');
+      }
+      e.target.value = '';
+    });
+
+    // init
+    load(); render();
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
