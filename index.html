@@ -3,57 +3,134 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Accueil</title>
+  <title>Artévia – Solutions digitales légères</title>
   <link rel="preload" href="assets/css/styles.css" as="style">
   <link rel="stylesheet" href="assets/css/styles.css">
-  <meta name="description" content="Accueil – mes projets et ma liste de courses">
+  <meta name="description" content="Artévia – Studio léger : sites WordPress, automatisations, et intégrations API.">
 </head>
 <body>
   <header class="site-header">
     <nav class="nav">
       <!-- Marque avec logo -->
-      <a class="brand" href="./" aria-label="Accueil">
-        <img src="assets/img/artevia_logo.png" alt="" style="height:24px;width:auto;vertical-align:middle;margin-right:.5rem">
+      <a class="brand" href="#top" aria-label="Accueil">
+        <img src="assets/img/artevia_logo.png" alt="" style="height:40px;width:auto;vertical-align:middle;margin-right:.35rem">
         <span>Artévia</span>
       </a>
 
       <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
 
       <ul class="nav-list">
-        <li><a href="./">Accueil</a></li>
-        <li><a href="./courses.html">Liste de courses</a></li>
-        <li><a href="#projets">Projets à venir</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#realisations">Réalisations</a></li>
+        <li><a href="#projets">Projets</a></li>
+        <li><a href="#apropos">À propos</a></li>
+        <li><a href="#contact" class="btn subtle" style="padding:.35rem .6rem">Contact</a></li>
       </ul>
     </nav>
 
-    <section class="hero">
-      <h1>Bienvenue 👋</h1>
-      <p>Une base moderne, rapide et responsive pour mes tests et mes projets.</p>
-      <div class="hero-actions">
-        <a class="btn primary" href="./courses.html">Ouvrir la liste de courses</a>
-        <a class="btn" href="#projets">Voir les projets</a>
+    <section id="top" class="hero">
+      <div class="hero-wrap hero--mesh"> <!-- options: hero--mesh | hero--cubes | hero--lines -->
+        <div class="hero--boxed">
+          <span class="title-accent">Site factice</span>
+          <h1>Solutions digitales sur‑mesure,<br>légères, utiles.</h1>
+          <p>Sites WordPress vitrines, automatisations simples et intégrations API pragmatiques. Focus sur la clarté, la vitesse et le coût juste.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#contact">Demander un devis</a>
+            <a class="btn" href="#services">Voir les services</a>
+          </div>
+        </div>
       </div>
     </section>
   </header>
 
   <main class="container">
-    <section class="grid">
+    <!-- Avantages clés -->
+    <section class="grid" aria-labelledby="avantages">
+      <h2 id="avantages" class="sr-only">Avantages</h2>
       <article class="card">
-        <h2>Simple & propre</h2>
-        <p>HTML + CSS vanilla. Aucune dépendance. Parfait pour GitHub Pages.</p>
+        <h3>Simple & propre</h3>
+        <p>HTML + CSS vanilla. Aucune dépendance. Parfait pour un hébergement léger ou GitHub Pages.</p>
       </article>
-
       <article class="card">
-        <h2>Rapide</h2>
-        <p>Design léger, typographies systèmes, responsive par défaut.</p>
+        <h3>Rapide</h3>
+        <p>Design léger, typographies système, responsive par défaut. Scores Core Web Vitals prioritaires.</p>
       </article>
-
       <article class="card">
-        <h2>Accessible</h2>
-        <p>Boutons et liens étiquetés, navigation clavier, aria pour le menu.</p>
+        <h3>Fiable</h3>
+        <p>Approche pragmatique : peu de plugins, documentation claire, sauvegardes et rollback.</p>
       </article>
     </section>
 
+    <!-- Services -->
+    <section id="services" class="section">
+      <h2>Services</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Site vitrine WordPress</h3>
+          <p>Thème léger, pages clés (Accueil, Services, Mentions légales), optimisation base, formulaire.</p>
+          <ul class="timeline">
+            <li><span class="tag">Délai</span><span>1–2 semaines</span></li>
+            <li><span class="tag">Budget</span><span>À partir de 800 €</span></li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Automatisations (no/low‑code)</h3>
+          <p>Flux simples : formulaires → Google Sheets, alertes e‑mail, webhooks.</p>
+          <ul class="timeline">
+            <li><span class="tag">Délai</span><span>2–5 jours</span></li>
+            <li><span class="tag">Budget</span><span>Sur devis</span></li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>APIs & intégrations</h3>
+          <p>Connexion à des services tiers (auth, paiement, e‑commerce), documentation d’usage.</p>
+          <ul class="timeline">
+            <li><span class="tag">Délai</span><span>1–3 semaines</span></li>
+            <li><span class="tag">Budget</span><span>Sur devis</span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- Logo wall (clients fictifs) -->
+    <section class="section" aria-labelledby="clients">
+      <h2 id="clients">Ils nous font confiance</h2>
+      <div class="logo-wall">
+        <img src="assets/img/logos/logo1.svg" alt="Client 1" />
+        <img src="assets/img/logos/logo2.svg" alt="Client 2" />
+        <img src="assets/img/logos/logo3.svg" alt="Client 3" />
+        <img src="assets/img/logos/logo4.svg" alt="Client 4" />
+        <img src="assets/img/logos/logo5.svg" alt="Client 5" />
+      </div>
+      <p class="muted small">Logos factices — remplacez avec vos références.</p>
+    </section>
+
+    <!-- Réalisations (fictives au départ) -->
+    <section id="realisations" class="section">
+      <h2>Réalisations</h2>
+      <div class="grid cards-visual">
+        <article class="card visual">
+          <div class="thumb" aria-hidden="true" style="background-image:url('assets/img/harmony-gallery.png')"></div>
+          <h3>Harmoni Gallery</h3>
+          <p>Plugin WordPress pour galeries légères (POC). Optimisé Core Web Vitals.</p>
+          <a class="btn" href="#" aria-disabled="true">Étude de cas (bientôt)</a>
+        </article>
+        <article class="card visual">
+          <div class="thumb" aria-hidden="true" style="background-image:url('assets/img/realisation_POD.png')"></div>
+          <h3>POD</h3>
+          <p>Réalisation de logos pour t-shirt, mugs, flyers....</p>
+          <a class="btn" href="#" aria-disabled="true">Aperçu (bientôt)</a>
+        </article>
+        <article class="card visual">
+          <div class="thumb" aria-hidden="true" style="background-image:url('assets/img/plugin.png')"></div>
+          <h3>Doc API (WP VIP)</h3>
+          <p>Intégration Swagger UI + shortcodes, filtres par <code>operationId</code>, snippets.</p>
+          <a class="btn" href="#" aria-disabled="true">Lire (bientôt)</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- Projets à venir -->
     <section id="projets" class="section">
       <h2>Projets à venir</h2>
       <div class="grid">
@@ -63,3 +140,139 @@
           <p><a class="btn" href="./courses.html">Ouvrir</a></p>
         </article>
         <article class="card">
+          <h3>Automate léger (type Logic App)</h3>
+          <p>Chaîner des actions courantes avec une facturation simple et transparente.</p>
+          <p><a class="btn" href="#" aria-disabled="true">MVP (bientôt)</a></p>
+        </article>
+        <article class="card">
+          <h3>Thème WP « Harmoni One »</h3>
+          <p>Thème propre, sidebar optionnelle, composant sommaire.</p>
+          <p><a class="btn" href="#" aria-disabled="true">Demo (bientôt)</a></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- À propos -->
+    <section id="apropos" class="section container narrow">
+      <h2>À propos</h2>
+      <p>Artévia, studio léger fondé par Benjamin (chef de projet API). Mission : livrer des solutions utiles sans complexité inutile.</p>
+      <ul class="kpis">
+        <li><span class="kpi">6+</span><span>années en gestion de projets IT</span></li>
+        <li><span class="kpi">API</span><span>Azure APIM, docs, monitoring</span></li>
+        <li><span class="kpi">WP</span><span>Thèmes, blocs, performance</span></li>
+      </ul>
+    </section>
+
+    <!-- Témoignages (fictifs) -->
+    <section class="section">
+      <h2>Témoignages</h2>
+      <div class="testimonials">
+        <blockquote>
+          <p>« Livraison claire et rapide. Les explications nous permettent d’être autonomes. »</p>
+          <cite>— Camille D., e‑commerce</cite>
+        </blockquote>
+        <blockquote>
+          <p>« Intégration API propre, doc à jour, et zéro blabla. »</p>
+          <cite>— Marc L., produit</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section container narrow">
+      <h2>FAQ</h2>
+      <details>
+        <summary>Quels délais pour un site vitrine ?</summary>
+        <p>En général 1 à 2 semaines selon le contenu fourni (textes, images, logos).</p>
+      </details>
+      <details>
+        <summary>Pouvez‑vous reprendre un site existant ?</summary>
+        <p>Oui, après un rapide audit technique et de contenu.</p>
+      </details>
+      <details>
+        <summary>Proposez‑vous de la maintenance ?</summary>
+        <p>Oui : mises à jour, sauvegardes, petites évolutions (forfait mensuel).</p>
+      </details>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section container narrow">
+      <h2>Contact</h2>
+      <form class="contact-form" name="contact" method="post" action="#" onsubmit="alert('Merci ! Votre message a été envoyé (démo).'); return false;">
+        <div class="form-row">
+          <label for="name">Nom</label>
+          <input id="name" name="name" type="text" required placeholder="Votre nom">
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="vous@exemple.fr">
+        </div>
+        <div class="form-row">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Parlez‑moi de votre besoin…"></textarea>
+        </div>
+        <button class="btn primary" type="submit">Envoyer</button>
+      </form>
+      <p class="hint">Ou écrivez‑moi : <a href="mailto:contact@artevia.example">contact@artevia.example</a></p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-inline">
+          <img src="assets/img/artevia_logo.png" alt="" style="height:22px;vertical-align:middle;margin-right:.35rem">
+          <strong>Artévia</strong>
+        </div>
+        <p class="muted small">Studio léger : sites, automatisations, intégrations.</p>
+      </div>
+      <nav class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#realisations">Réalisations</a></li>
+          <li><a href="#apropos">À propos</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">Mentions légales</a></li>
+          <li><a href="#" aria-disabled="true">Politique de confidentialité</a></li>
+          <li><a href="#" aria-disabled="true">Cookies</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h4>Réseaux</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">LinkedIn</a></li>
+          <li><a href="#" aria-disabled="true">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="y"></span> Artévia. Tous droits réservés.</span>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.nav-toggle');
+    const list = document.querySelector('.nav-list');
+    if (toggle && list) {
+      toggle.addEventListener('click', () => {
+        const isOpen = list.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+      });
+    }
+    // Scroll spy (simple): close menu on click
+    document.querySelectorAll('.nav-list a').forEach(a => {
+      a.addEventListener('click', () => list.classList.remove('open'));
+    });
+    // Current year in footer
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

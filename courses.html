@@ -3,31 +3,37 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Liste de courses</title>
+  <title>Liste de courses – Artévia</title>
+  <link rel="preload" href="assets/css/styles.css" as="style">
   <link rel="stylesheet" href="assets/css/styles.css">
   <meta name="description" content="Liste de courses – ajouter, cocher, filtrer, exporter, synchroniser.">
 </head>
 <body>
   <header class="site-header compact">
     <nav class="nav">
-      <a class="brand" href="./">← Accueil</a>
+      <a class="brand" href="index.html" aria-label="Accueil">
+        ← Accueil
+      </a>
       <ul class="nav-list">
         <li><a class="active" href="./courses.html">Liste de courses</a></li>
       </ul>
     </nav>
   </header>
 
-  <main class="container narrow">
+  <main class="container narrow section">
     <h1>🛒 Liste de courses</h1>
 
     <!-- Lien de partage -->
-    <div class="share">
-      <span>🔗 Lien de cette liste :</span>
-      <input id="share-url" type="text" readonly>
-      <button id="new-list" class="btn subtle">Nouvelle liste</button>
+    <div class="card share">
+      <label for="share-url" class="muted small" style="display:block;margin-bottom:.4rem">🔗 Lien de cette liste</label>
+      <div class="share-row">
+        <input id="share-url" type="text" readonly>
+        <button id="new-list" class="btn">Nouvelle liste</button>
+      </div>
+      <p class="hint">Partagez ce lien pour collaborer en temps réel.</p>
     </div>
 
-    <form id="add-form" class="add-form" autocomplete="off">
+    <form id="add-form" class="add-form card" autocomplete="off">
       <input id="name" type="text" placeholder="Article (ex. Lait)" required>
       <input id="qty" type="number" min="1" step="1" value="1" aria-label="Quantité">
       <select id="cat" aria-label="Catégorie">
@@ -43,7 +49,7 @@
       <button class="btn primary" type="submit">Ajouter</button>
     </form>
 
-    <div class="toolbar">
+    <div class="toolbar card">
       <input id="search" type="search" placeholder="Rechercher…">
       <select id="filter">
         <option value="all">Tous</option>
@@ -61,13 +67,48 @@
     <ul id="list" class="list"></ul>
 
     <p class="hint">
-      Astuce : la liste est stockée localement **et** synchronisée dans le cloud si la page a “?list=…”.  
-      Partagez l’URL pour collaborer. Hors connexion, les changements seront repris à la reconnexion.
+      Astuce : la liste est stockée localement <strong>et</strong> synchronisée dans le cloud si l’URL contient <code>?list=…</code>.
+      Hors connexion, les changements sont repris à la reconnexion.
     </p>
   </main>
 
   <footer class="site-footer">
-    <p>© <span id="year"></span></p>
+    <div class="footer-grid">
+      <div>
+        <div class="brand-inline">
+          <img src="assets/img/artevia_logo.png" alt="" style="height:22px;vertical-align:middle;margin-right:.35rem">
+          <strong>Artévia</strong>
+        </div>
+        <p class="muted small">Studio léger : sites, automatisations, intégrations.</p>
+      </div>
+      <nav class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#realisations">Réalisations</a></li>
+          <li><a href="index.html#apropos">À propos</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">Mentions légales</a></li>
+          <li><a href="#" aria-disabled="true">Politique de confidentialité</a></li>
+          <li><a href="#" aria-disabled="true">Cookies</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h4>Réseaux</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">LinkedIn</a></li>
+          <li><a href="#" aria-disabled="true">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Artévia. Tous droits réservés.</span>
+    </div>
   </footer>
 
   <!-- Firebase (compat) -->
@@ -77,15 +118,14 @@
 
   <script>
     // 1) CONFIG FIREBASE — À REMPLACER
-    
-  const firebaseConfig = {
-    apiKey: "AIzaSyCUcLyWrI8Fa3QdCWqQjnkZaCgtpEHWJII",
-    authDomain: "courses-list-aedc3.firebaseapp.com",
-    projectId: "courses-list-aedc3",
-    storageBucket: "courses-list-aedc3.firebasestorage.app",
-    messagingSenderId: "370685305590",
-    appId: "1:370685305590:web:3d10bc68686abc1ae1c2d7"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUcLyWrI8Fa3QdCWqQjnkZaCgtpEHWJII",
+      authDomain: "courses-list-aedc3.firebaseapp.com",
+      projectId: "courses-list-aedc3",
+      storageBucket: "courses-list-aedc3.firebasestorage.app",
+      messagingSenderId: "370685305590",
+      appId: "1:370685305590:web:3d10bc68686abc1ae1c2d7"
+    };
 
     // 2) APP STATE
     const KEY = 'shoppingList.v1';
