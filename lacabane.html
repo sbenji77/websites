@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>La Cabane du Bassin – Produits du terroir</title>
+  <link rel="preload" href="assets/css/styles.css" as="style">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <meta name="description" content="Boutique locale fictive : huîtres, vins & produits du terroir du Bassin d'Arcachon. Click & Collect et livraison.">
+</head>
+<body class="theme-terroir">
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="realisations.html" aria-label="Retour">
+        ← Réalisations
+      </a>
+      <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+      <ul class="nav-list">
+        <li><a href="#produits">Produits</a></li>
+        <li><a href="#horaires">Horaires</a></li>
+        <li><a href="#trouver">Nous trouver</a></li>
+        <li><a href="#commander" class="btn subtle" style="padding:.35rem .6rem">Commander</a></li>
+      </ul>
+    </nav>
+
+    <section class="hero theme-terroir">
+        <div class="hero-wrap" style="--hero-bg:none; position:relative; min-height:320px;">
+          <!-- Fond image arrondi -->
+          <div style="
+            position:absolute; inset:0; z-index:0;
+            border-radius:32px;
+            background-image:url('assets/img/plan.jpg');
+            background-size:cover; background-position:center;
+            box-shadow:0 12px 40px rgba(0,0,0,.18);
+          "></div>
+      
+          <!-- Voile clair pour la lisibilité -->
+          <div style="
+            position:absolute; inset:0; z-index:1;
+            border-radius:32px;
+            background:linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,.70) 100%);
+            border:1px solid rgba(0,0,0,.06);
+            pointer-events:none;
+          "></div>
+      
+          <!-- Contenu -->
+          <div class="hero--boxed" style="position:relative; z-index:2;">
+            <span class="title-accent">Boutique locale — démo</span>
+            <h1>La Cabane du Bassin</h1>
+            <p>Huîtres, vins blancs & produits du terroir — Arcachon / La Teste.</p>
+            <div class="hero-actions">
+              <a class="btn primary" href="#produits">Voir nos produits</a>
+              <a class="btn subtle" href="#commander">Commander</a>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+
+  <main class="container theme-terroir">
+    <!-- Avantages -->
+    <section class="section">
+      <div class="info-cards">
+        <article class="card--soft">
+          <h3>Produits frais</h3>
+          <p>Sélection quotidienne auprès d’ostréiculteurs et artisans du Bassin.</p>
+        </article>
+        <article class="card--soft">
+          <h3>Click & Collect</h3>
+          <p>Commandez et retirez à la cabane ou au marché du dimanche.</p>
+        </article>
+        <article class="card--soft">
+          <h3>Livraison locale</h3>
+          <p>Arcachon, La Teste, Gujan — créneaux du ven. au dim.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Produits -->
+    <section id="produits" class="section">
+      <h2>Nos produits</h2>
+      <div class="product-grid--terroir">
+        <article class="product-card--terroir">
+          <div class="p-thumb" style="background-image:url('assets/img/huîtres.jpg')"></div>
+          <div class="p-body">
+            <h4>Huîtres n°3 — la douzaine</h4>
+            <p class="note">Citron & pain de seigle inclus.</p>
+            <div class="p-meta">
+              <span class="price-tag">12,90 €</span>
+              <span class="badge-local">Bassin d’Arcachon</span>
+            </div>
+            <a class="btn primary" href="#commander">Commander</a>
+          </div>
+        </article>
+
+        <article class="product-card--terroir">
+          <div class="p-thumb" style="background-image:url('assets/img/vin-blanc.jpg')"></div>
+          <div class="p-body">
+            <h4>Vin blanc du terroir</h4>
+            <p class="note">Sec & fruité — accord parfait huîtres.</p>
+            <div class="p-meta">
+              <span class="price-tag">9,50 €</span>
+              <span class="badge-local">Producteurs locaux</span>
+            </div>
+            <a class="btn primary" href="#commander">Commander</a>
+          </div>
+        </article>
+
+        <article class="product-card--terroir">
+          <div class="p-thumb" style="background-image:url('assets/img/confitures.jpg')"></div>
+          <div class="p-body">
+            <h4>Confitures artisanales</h4>
+            <p class="note">Fraise, abricot, figue — cuites au chaudron.</p>
+            <div class="p-meta">
+              <span class="price-tag">5,90 €</span>
+              <span class="badge-local">Fabrication locale</span>
+            </div>
+            <a class="btn primary" href="#commander">Commander</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="provenance" style="margin-top:1rem">
+        <strong>Provenance :</strong> producteurs du Bassin d’Arcachon et alentours. Traçabilité sur demande.
+      </div>
+    </section>
+
+    <!-- Ambiance -->
+    <section class="section">
+      <h2>Ambiance du Bassin</h2>
+      <div class="gallery--terroir">
+        <figure class="g-item" style="background-image:url('assets/img/cabane.jpg')"></figure>
+        <figure class="g-item" style="background-image:url('assets/img/plage.jpg')"></figure>
+        <figure class="g-item" style="background-image:url('assets/img/pinasse.jpg')"></figure>
+      </div>
+      <p class="muted small">Images de démonstration. Remplacez par vos propres visuels.</p>
+    </section>
+
+    <!-- Horaires / Retrait -->
+    <section id="horaires" class="section">
+      <h2>Horaires & Retrait</h2>
+      <div class="info-cards">
+        <article class="card--soft">
+          <h3>Ouverture</h3>
+          <table class="hours">
+            <tr><td>Vendredi</td><td>16:00 — 20:00</td></tr>
+            <tr><td>Samedi</td><td>10:00 — 13:00 • 16:00 — 20:00</td></tr>
+            <tr><td>Dimanche</td><td>10:00 — 13:00</td></tr>
+          </table>
+        </article>
+        <article class="card--soft">
+          <h3>Retrait</h3>
+          <p>À la cabane (Arcachon) ou sur le marché (La Teste).</p>
+          <p class="muted small">Adresse communiquée lors de la commande.</p>
+        </article>
+        <article class="card--soft">
+          <h3>Livraison</h3>
+          <p>Arcachon, La Teste, Gujan — frais 3 €.</p>
+          <p class="muted small">Gratuit dès 40 €.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Nous trouver -->
+    <section id="trouver" class="section">
+      <h2>Où nous trouver</h2>
+      <div class="map-embed">
+        <!-- OpenStreetMap - centre Arcachon (coord. approximatives) -->
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-1.186%2C44.63%2C-1.14%2C44.69&layer=mapnik&marker=44.66%2C-1.163"
+          style="border:0; width:100%; height:100%" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Carte Arcachon"></iframe>
+      </div>
+      <p class="muted small" style="margin-top:.5rem">Localisation indicative (démo).</p>
+    </section>
+
+    <!-- Commander -->
+    <section id="commander" class="section container narrow">
+      <h2>Commander</h2>
+      <p>Commandez par téléphone ou WhatsApp. Nous confirmons la disponibilité et l’horaire de retrait/livraison.</p>
+      <p style="display:flex; gap:.6rem; flex-wrap:wrap">
+        <a class="btn primary" href="tel:+33556550000">📞 05 56 55 00 00</a>
+        <a class="btn" href="https://wa.me/33666000000" target="_blank" rel="noopener">💬 WhatsApp</a>
+        <a class="btn subtle" href="#produits">Voir les produits</a>
+      </p>
+
+      <div class="notice" style="margin-top:.6rem">
+        ⚠️ Démonstration : aucune commande réelle n’est prise sur cette page.
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <strong>La Cabane du Bassin</strong>
+        <p class="muted small">Boutique locale — page de démonstration Artévia.</p>
+      </div>
+      <nav class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="#produits">Produits</a></li>
+          <li><a href="#horaires">Horaires</a></li>
+          <li><a href="#trouver">Nous trouver</a></li>
+          <li><a href="#commander">Commander</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col">
+        <h4>Infos</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">Mentions légales</a></li>
+          <li><a href="#" aria-disabled="true">Politique de confidentialité</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+33556550000">05 56 55 00 00</a></li>
+          <li><a href="mailto:contact@cabane.example">contact@cabane.example</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="y"></span> Démo — La Cabane du Bassin.</span>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const list = document.querySelector('.nav-list');
+    if (toggle && list) toggle.addEventListener('click', () => {
+      const isOpen = list.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+    document.querySelectorAll('.nav-list a').forEach(a => a.addEventListener('click', ()=>list.classList.remove('open')));
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

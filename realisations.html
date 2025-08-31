@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Réalisations – Artévia</title>
+  <link rel="preload" href="assets/css/styles.css" as="style">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <meta name="description" content="Nos réalisations & démos : sites vitrines, plugins, automatisations.">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="index.html" aria-label="Accueil">
+        <img src="assets/img/artevia_logo.png" alt="" style="height:40px;width:auto;vertical-align:middle;margin-right:.35rem">
+        <span>Artévia</span>
+      </a>
+      <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+      <ul class="nav-list">
+        <li><a href="index.html#services">Services</a></li>
+        <li><a class="active" href="realisations.html">Réalisations</a></li>
+        <li><a href="index.html#projets">Projets</a></li>
+        <li><a href="index.html#apropos">À propos</a></li>
+        <li><a href="index.html#contact" class="btn subtle" style="padding:.35rem .6rem">Contact</a></li>
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-wrap hero--cubes">
+        <div class="hero--boxed">
+          <span class="title-accent">Portfolio & démos</span>
+          <h1>Réalisations</h1>
+          <p>Exemples concrets de sites et composants livrables rapidement. Cliquez pour ouvrir une étude de cas.</p>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <main class="container section">
+    <div class="grid cards-visual">
+      <!-- Vignette : La Cabane du Bassin -->
+      <article class="card visual">
+        <a href="lacabane.html" style="display:block;text-decoration:none;color:inherit">
+          <div class="thumb" aria-hidden="true" style="background-image:url('assets/img/bassin/hero.jpg')"></div>
+          <h3>La Cabane du Bassin</h3>
+          <p>Boutique locale fictive (huîtres, produits du terroir) — démo de site vitrine orienté commerce.</p>
+          <span class="btn">Ouvrir la démo</span>
+        </a>
+      </article>
+
+      <!-- Exemple : Harmoni Gallery -->
+      <article class="card visual">
+        <a href="#" aria-disabled="true" style="display:block;text-decoration:none;color:inherit">
+          <div class="thumb" aria-hidden="true" style="background-image:url('assets/img/harmony-gallery.png')"></div>
+          <h3>Harmoni Gallery</h3>
+          <p>Plugin WordPress pour galeries légères (POC). Optimisé Core Web Vitals.</p>
+          <span class="btn" aria-disabled="true">Étude de cas (bientôt)</span>
+        </a>
+      </article>
+
+      <!-- Exemple : POD -->
+      <article class="card visual">
+        <a href="#" aria-disabled="true" style="display:block;text-decoration:none;color:inherit">
+          <div class="thumb" aria-hidden="true" style="background-image:url('assets/img/realisation_POD.png')"></div>
+          <h3>POD</h3>
+          <p>Print-on-Demand : logos t-shirts, mugs, flyers. Automatisations commandes → imprimeur.</p>
+          <span class="btn" aria-disabled="true">Aperçu (bientôt)</span>
+        </a>
+      </article>
+
+      <!-- Exemple : Doc API -->
+      <article class="card visual">
+        <a href="#" aria-disabled="true" style="display:block;text-decoration:none;color:inherit">
+          <div class="thumb" aria-hidden="true" style="background-image:url('assets/img/plugin.png')"></div>
+          <h3>Doc API (WP VIP)</h3>
+          <p>Swagger UI + shortcodes, filtres <code>operationId</code>, snippets dynamiques.</p>
+          <span class="btn" aria-disabled="true">Lire (bientôt)</span>
+        </a>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-inline">
+          <img src="assets/img/artevia_logo.png" alt="" style="height:22px;vertical-align:middle;margin-right:.35rem">
+          <strong>Artévia</strong>
+        </div>
+        <p class="muted small">Studio léger : sites, automatisations, intégrations.</p>
+      </div>
+      <nav class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="realisations.html">Réalisations</a></li>
+          <li><a href="index.html#apropos">À propos</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">Mentions légales</a></li>
+          <li><a href="#" aria-disabled="true">Politique de confidentialité</a></li>
+          <li><a href="#" aria-disabled="true">Cookies</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h4>Réseaux</h4>
+        <ul>
+          <li><a href="#" aria-disabled="true">LinkedIn</a></li>
+          <li><a href="#" aria-disabled="true">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="y"></span> Artévia. Tous droits réservés.</span>
+    </div>
+  </footer>
+
+  <script>
+    // nav mobile
+    const toggle = document.querySelector('.nav-toggle');
+    const list = document.querySelector('.nav-list');
+    if (toggle && list) toggle.addEventListener('click', () => {
+      const isOpen = list.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+    document.querySelectorAll('.nav-list a').forEach(a => a.addEventListener('click', ()=>list.classList.remove('open')));
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

@@ -344,3 +344,258 @@ h3{margin:.2rem 0 .4rem}
     border-top-left-radius: var(--radius);
     border-top-right-radius: var(--radius);
   }
+
+/* ===================== THEME TERROIR CLAIR ===================== */
+/* Palette claire + fond global */
+.theme-terroir{
+  --bg:#fdfbf7; --panel:#fff; --panel-2:#f6f2ea;
+  --text:#2b2b2b; --muted:#666;
+  --primary:#2f7d5a; --primary-2:#8fd0b2; --accent:#d8c4a6;
+}
+body.theme-terroir{ background: var(--bg) !important; color: var(--text); }
+
+/* Hero : structure et z-index */
+.theme-terroir .hero { position: relative; }
+.theme-terroir .hero-wrap { position: relative; min-height: 320px; }
+.theme-terroir .hero--boxed { position: relative; z-index: 2; border-radius: 24px; }
+
+/* >>> Image derrière le titre (utilise UNIQUEMENT la variable --hero-bg) */
+.theme-terroir .hero-wrap::before{
+  content:""; position:absolute; inset:0; z-index: 0;
+  background: var(--hero-bg) center/cover no-repeat;
+  border-radius: 24px;
+  opacity: .95;
+  box-shadow: 0 12px 40px rgba(0,0,0,.18);
+}
+
+/* Nav claire */
+.theme-terroir .nav{
+  background: rgba(255,255,255,.9);
+  border-bottom:1px solid rgba(0,0,0,.06);
+  backdrop-filter: blur(8px);
+}
+
+/* Voile clair par-dessus l'image pour la lisibilité du texte */
+.theme-terroir .hero-wrap::after{
+  content:""; position:absolute; inset:0; z-index: 1;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,.70) 100%);
+  border: 1px solid rgba(0,0,0,.06);
+}
+.theme-terroir .title-accent {
+  background: rgba(216,196,166,.25);
+  border: 1px solid rgba(216,196,166,.55);
+  color: #2b2b2b;
+}
+
+.theme-terroir .btn.primary {
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  color: #fff;
+  border: none;
+  font-weight: 600;
+}
+.theme-terroir .btn.subtle {
+  background: rgba(216,196,166,.15);
+  border: 1px solid rgba(216,196,166,.3);
+  color: #2b2b2b;
+}
+
+/* Cartes produits rustiques */
+.product-grid--terroir{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+.product-card--terroir{
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+  border: 1px solid rgba(216,196,166,.25);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 26px rgba(0,0,0,.35);
+}
+.product-card--terroir .p-thumb{
+  height: 190px;
+  background-size: cover;
+  background-position: center;
+  border-bottom: 1px solid rgba(216,196,166,.2);
+}
+.product-card--terroir .p-body{ padding: 1rem 1rem 1.1rem }
+.product-card--terroir h4{
+  margin:.2rem 0 .35rem;
+  font-weight: 700;
+}
+.product-card--terroir .note{ color: var(--muted); font-size: .9rem }
+.product-card--terroir .p-meta{
+  display:flex; align-items:center; gap:.5rem; margin:.6rem 0 1rem;
+}
+.price-tag{
+  font-weight: 800; font-size: 1.25rem;
+  padding:.1rem .5rem; border-radius: .5rem;
+  background: rgba(216,196,166,.14);
+  border: 1px solid rgba(216,196,166,.35);
+  color: #ffe8bf;
+}
+.badge-local{
+  display:inline-block; font-size:.85rem;
+  padding:.15rem .55rem; border-radius: 999px;
+  border:1px solid rgba(47,125,90,.5);
+  background: rgba(47,125,90,.18); color:#d9fff0;
+}
+
+/* Blocs “avantages / horaires / zones” */
+.info-cards{
+  display:grid; grid-template-columns: repeat(auto-fit,minmax(220px, 1fr));
+  gap: 1rem;
+}
+.card--soft{
+  background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
+  border:1px solid rgba(216,196,166,.25);
+  border-radius: 14px; padding: 1rem;
+}
+.hours{
+  width:100%; border-collapse:separate; border-spacing:0 6px; font-size:.98rem;
+}
+.hours td{
+  padding:.35rem .6rem; background: rgba(216,196,166,.10); border:1px solid rgba(216,196,166,.25);
+  border-radius: 8px;
+}
+
+/* Galerie ambiance avec bords sable */
+.gallery--terroir{ display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:.8rem }
+.gallery--terroir .g-item{
+  height: 150px; background-size:cover; background-position:center;
+  border:1px solid rgba(216,196,166,.25); border-radius:12px;
+}
+
+/* Encarts mise en garde / provenance */
+.notice{
+  background: rgba(122,47,47,.12);
+  border: 1px solid rgba(122,47,47,.35);
+  color: #ffe0e0; padding:.8rem 1rem; border-radius: 10px;
+  font-size: .95rem;
+}
+.provenance{
+  background: rgba(216,196,166,.10);
+  border: 1px solid rgba(216,196,166,.35);
+  color: var(--text); padding:.8rem 1rem; border-radius: 10px;
+  font-size: .95rem;
+}
+
+/* Carte intégrée (OpenStreetMap) */
+.map-embed { width:100%; height: 320px; border: 1px solid rgba(216,196,166,.35); border-radius: 12px; overflow:hidden }
+
+
+/* ===== FIX: forcer la version claire de "La Cabane" ===== */
+.theme-terroir { /* palette claire */
+  --bg:#fdfbf7; --panel:#fff; --panel-2:#f6f2ea;
+  --text:#2b2b2b; --muted:#666; --primary:#2f7d5a; --primary-2:#8fd0b2; --accent:#d8c4a6;
+}
+
+/* Fond global : on écrase le gradient sombre du thème de base */
+body.theme-terroir{
+  background: var(--bg) !important;
+  color: var(--text);
+}
+
+/* Nav claire */
+.theme-terroir .nav{
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(8px);
+  border-bottom:1px solid rgba(0,0,0,.06);
+}
+.theme-terroir .brand,
+.theme-terroir .nav-list a{ color: var(--text); }
+.theme-terroir .nav-list a:hover,
+.theme-terroir .nav-list a.active{ background: rgba(0,0,0,.05); color: var(--text); }
+
+/* Hero : image/plan du Bassin derrière le titre (clair) */
+.theme-terroir .hero-wrap::before{
+  background: var(--hero-bg, url('../img/plan.jpg')) center/cover no-repeat !important;
+  opacity:.9;
+}
+.theme-terroir .hero-wrap::after{
+  background: linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,.7) 100%);
+}
+.theme-terroir .title-accent{
+  background: rgba(216,196,166,.25);
+  border:1px solid rgba(216,196,166,.55);
+  color:#2b2b2b;
+}
+.theme-terroir .btn.primary{
+  background: linear-gradient(180deg,var(--primary),var(--primary-2));
+  color:#fff; border:none; font-weight:600;
+}
+.theme-terroir .btn.subtle{
+  background: rgba(216,196,166,.15);
+  border:1px solid rgba(216,196,166,.3);
+  color:#2b2b2b;
+}
+
+/* Cartes et sections en clair */
+.theme-terroir .card,
+.theme-terroir .card--soft{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+}
+.theme-terroir .testimonials blockquote{
+  background:#fff; border:1px solid rgba(0,0,0,.08);
+}
+
+/* Cartes & produits en clair */
+.theme-terroir .card, .theme-terroir .card--soft,
+.theme-terroir .product-card--terroir{
+  background:#fff; border:1px solid rgba(0,0,0,.08);
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+}
+.theme-terroir .product-card--terroir .p-thumb{ border-bottom:1px solid rgba(0,0,0,.08); }
+.theme-terroir .price-tag{ color: var(--primary); background: rgba(47,125,90,.08); border-color: rgba(47,125,90,.25); }
+.theme-terroir .badge-local{ background: rgba(47,125,90,.12); border-color: rgba(47,125,90,.35); color:#2b2b2b; }
+
+
+/* Galerie */
+.theme-terroir .gallery--terroir .g-item{ border-color: rgba(0,0,0,.08); }
+
+/* Encarts / carte */
+.theme-terroir .notice{ background: #fff3f3; color:#7a2f2f; border:1px solid #efb9b9; }
+.theme-terroir .provenance{ background:#fff; border:1px solid rgba(0,0,0,.08); }
+.theme-terroir .map-embed{ border:1px solid rgba(0,0,0,.08); }
+
+/* Footer clair */
+.theme-terroir .site-footer{
+  background: #fff; color: var(--muted);
+  border-top:1px solid rgba(0,0,0,.08);
+}
+
+.theme-terroir .brand, .theme-terroir .nav-list a{ color: var(--text); }
+.theme-terroir .nav-list a:hover, .theme-terroir .nav-list a.active{
+  background: rgba(0,0,0,.05); color: var(--text);
+}
+
+
+/* --- Fix Cabane : arrondis + source d'image --- */
+.theme-terroir .hero { position: relative; }
+.theme-terroir .hero-wrap { position: relative; min-height: 320px; }
+.theme-terroir .hero--boxed { position: relative; z-index: 2; border-radius: 32px; }
+
+/* Image derrière le titre : on lit UNIQUEMENT la variable --hero-bg passée en inline */
+.theme-terroir .hero-wrap::before{
+  content:""; position:absolute; inset:0; z-index:0;
+  background: var(--hero-bg) center/cover no-repeat;
+  border-radius: 32px;
+  opacity:.95;
+  box-shadow: 0 12px 40px rgba(0,0,0,.18);
+}
+
+/* Voile clair pour lisibilité */
+.theme-terroir .hero-wrap::after{
+  content:""; position:absolute; inset:0; z-index:1;
+  border-radius: 32px;
+  background: linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,.70) 100%);
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+/* Ceinture et bretelles si d'autres règles traînent plus haut */
+.theme-terroir .hero-wrap::before,
+.theme-terroir .hero-wrap::after{ border-radius:32px !important; }
+
